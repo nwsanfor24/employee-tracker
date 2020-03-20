@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
     user: "root",
 
     password: "Gu!tar92",
-    database: "employeetracker_db"
+    database: "employeeTracker_db"
 });
 
 connection.connect(function(err) {
@@ -65,3 +65,30 @@ function runPrompt() {
     });
 }
 
+function allEmployees() {
+    inquirer.prompt({
+        name: "id",
+        type: "input",
+        message: "Who would you like to search for?"
+    })
+    .then(function(answer) {
+        var query = "SELECT first_name, last_name, role_id FROM employee WHERE ?";
+        connection.query(query, { id: answer.id }, function(err, res) {
+            for (var i = 0; i < res.length; i++) {
+                console.table("First Name: " + res[i].first_name + " || Last Name: " + res[i].last_name + " || Role: " + res[i].role);
+            }
+            runPrompt();
+        });
+    });
+}
+
+function allEmByDept() {
+    inquirer.prompt({
+        name: "role_id",
+        type: "input",
+        message: "Which department would you like to select?"
+    })
+    .then(function(answer) {
+        var query = "SELECT "
+    })
+}
