@@ -104,29 +104,21 @@ function allDept() {
 }
 
 function allRoles() {
-    inquirer
-        .prompt({
-            name: "role",
-            type: "input",
-            message: "What role would you like to search for?"
-        })
-        .then(function(answer) {
-            var query = "SELECT role.id, role.title, role.salary, role.department_id FROM role";
+    connection.query("SELECT * FROM role ORDER BY id", function(err, result) {
+        if (err) throw err;
 
-            connection.query(query, [answer.role, answer.role], function (err, res) {
-                console.log(res.length + " matches found!");
-                for (var i = 0; i < res.length; i++) {
-                    console.log(
-                        "ID: " +
-                        res[i].id +
-                        " Title: " +
-                        res[i].title +
-                        " Salary: " +
-                        res[i].salary +
-                        " Department ID: " +
-                        res[i].department_id
-                    );
-                }
-            });
-        });
+        for (var i = 0; i < result.length; i++) {
+            console.table(
+                "ID: " +
+                result[i].id +
+                " Title: " +
+                result[i].title +
+                " Salary " +
+                result[i].salary +
+                " Department " +
+                result[i].department_id
+            );
+        }
+        runPrompt();
+    });
 }
