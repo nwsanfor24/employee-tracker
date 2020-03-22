@@ -94,9 +94,9 @@ function allDept() {
         for (var i = 0; i < result.length; i++) {
             console.table(
                 "ID " +
-                res[i].id +
+                result[i].id +
                 " Name " +
-                res[i].name
+                result[i].deptName
             );
         }
         runPrompt();
