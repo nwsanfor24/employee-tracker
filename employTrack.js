@@ -89,6 +89,40 @@ function allEmByDept() {
         message: "Which department would you like to select?"
     })
     .then(function(answer) {
-        var query = "SELECT "
+        console.log(answer.role)
+        connection.query("SELECT * FROM role WHERE ?", { role: answer.role }, function(err, res) {
+            console.table(answer.role);
+            runPrompt();
+        });
+    });
+}
+
+function allEmByMan() {
+    inquirer.prompt({
+        name: "manager_id",
+        type: "input",
+        message: "Which manager would you like to see, Karen?"
     })
+    .then(function(answer) {
+        var query = "SELECT employee.manager_id";
+        query += "FROM employee INNER JOIN role ON (employee.role_id = role.title AND role.department_id";
+        query += "= role.id) WHERE (employee.role_id = ? AND role.department_id = ?) ORDER BY role.id";
+
+        connection.query(query, [answer.manager_id, answer.department_id], function(err, res) {
+            console.log(res.length + " matches found!");
+            for (var i = 0; i < res.length; i++) {
+                console.table(
+                    i+1 + ".) " +
+                    "Manager: " +
+                    res[i].manager_id +
+                    " Role: " +
+                    res[i].role_id +
+                    " Department: " +
+                    res[i].department_id
+                );
+            }
+
+            runPrompt();
+        });
+    });
 }
