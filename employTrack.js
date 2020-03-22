@@ -114,6 +114,7 @@ function allEmByDept() {
                 res[i].name
             );
         }
+        runPrompt();
     });
 }
 
