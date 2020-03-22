@@ -66,34 +66,54 @@ function runPrompt() {
 }
 
 function allEmployees() {
-    inquirer.prompt({
-        name: "id",
-        type: "input",
-        message: "Who would you like to search for?"
-    })
-    .then(function(answer) {
-        var query = "SELECT first_name, last_name, role_id FROM employee WHERE ?";
-        connection.query(query, { id: answer.id }, function(err, res) {
-            for (var i = 0; i < res.length; i++) {
-                console.table("First Name: " + res[i].first_name + " || Last Name: " + res[i].last_name + " || Role: " + res[i].role);
-            }
-            runPrompt();
-        });
+    connection.query("SELECT * FROM employee ORDER BY first_name DESC", function (err, result) {
+        if (err) throw err;
+
+        for (var i = 0; i < result.length; i++) {
+            console.table(
+                "ID: " +
+                result[i].id +
+                " First Name: " +
+                result[i].first_name +
+                " Last Name " +
+                result[i].last_name +
+                " Role " +
+                result[i].role_id +
+                " Manager " +
+                result[i].manager_id
+            );
+        }
+        runPrompt();
     });
 }
 
+// function allEmByDept() {
+//     inquirer.prompt({
+//         name: "role_id",
+//         type: "input",
+//         message: "Which department would you like to select?"
+//     })
+//     .then(function(answer) {
+//         console.log(answer.role)
+//         connection.query("SELECT * FROM role WHERE ?", { role: answer.role }, function(err, res) {
+//             console.table(answer.role);
+//             runPrompt();
+//         });
+//     });
+// }
+
 function allEmByDept() {
-    inquirer.prompt({
-        name: "role_id",
-        type: "input",
-        message: "Which department would you like to select?"
-    })
-    .then(function(answer) {
-        console.log(answer.role)
-        connection.query("SELECT * FROM role WHERE ?", { role: answer.role }, function(err, res) {
-            console.table(answer.role);
-            runPrompt();
-        });
+    connection.query("SELECT * FROM department ORDER BY id", function(err, result) {
+        if (err) throw err;
+
+        for (var i = 0; i < result.length; i++) {
+            console.table(
+                "ID " +
+                res[i].id +
+                " Name " +
+                res[i].name
+            );
+        }
     });
 }
 
