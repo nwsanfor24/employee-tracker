@@ -1,7 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-
-require('events').EventEmitter.defaultMaxListeners = 15;
+const dataAccessLayer = require("./dal.js");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -148,5 +147,5 @@ class Employee {
 }
 
 function addEmployee() {
-    dataAccessLayer.create([`name`], [`Test Department`], [`department`]); 
+   dataAccessLayer.create(["first_name", "last_name", "role_id"], ["Jack", "Sparrow", 4], ["employee"]);
 }
